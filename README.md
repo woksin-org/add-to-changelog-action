@@ -1,7 +1,7 @@
-# GitHub Action - Action Name Here
-This GitHub action ...
+# GitHub Action - Add To Changelog
+This GitHub action prepnends a release note to the CHANGELOG.md file
 
-![Github JavaScript Actions CI/CD](https://github.com/dolittle/repository-here/workflows/Github%20JavaScript%20Actions%20CI/CD/badge.svg)
+![Github JavaScript Actions CI/CD](https://github.com/dolittle/add-to-changelog/workflows/Github%20JavaScript%20Actions%20CI/CD/badge.svg)
 
 ### Pre requisites
 Create a workflow `.yml` file in your `.github/workflows` directory. An [example workflow](#example-workflow) is available below.
@@ -9,10 +9,7 @@ Create a workflow `.yml` file in your `.github/workflows` directory. An [example
 For more information, reference the GitHub Help Documentation for [Creating a workflow file](https://help.github.com/en/articles/configuring-a-workflow#creating-a-workflow-file)
 
 ### Inputs
-- `some-input`: Description here
-
-### Outputs
-- `some-output`: Description here
+- `release-nonte`: The release note
 
 ### Example Workflow
 ```yaml
