@@ -1,3 +1,13 @@
+# [1.0.3] - 2021-0-25 [PR: #8](https://github.com/dolittle/add-to-changelog-action/pull/8)
+## Summary
+
+Fix bug that the old changelog would get truncated when opened
+
+### Fixed
+
+- Fix bug that when opened the old changelog got truncated
+
+
 # [1.0.2] - 2021-0-25 [PR: #7](https://github.com/dolittle/add-to-changelog-action/pull/7)
 ## Summary
 
