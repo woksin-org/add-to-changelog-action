@@ -1,3 +1,13 @@
+# [1.0.4] - 2021-1-25 [PR: #9](https://github.com/dolittle/add-to-changelog-action/pull/9)
+## Summary
+
+Fixed month bug
+
+### Fixed
+
+- Fixed month to be more human readable so add + 1 to the 0 based month number
+
+
 # [1.0.3] - 2021-0-25 [PR: #8](https://github.com/dolittle/add-to-changelog-action/pull/8)
 ## Summary
 
