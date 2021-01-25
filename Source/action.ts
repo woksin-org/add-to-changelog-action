@@ -95,7 +95,7 @@ async function commitChangelog(changelogPath: string, version: string) {
     await exec(
         'git commit',
         [
-            `-m "Add version ${version} ${changelogPath}"`
+            `-m "Add version ${version} to changelog"`
         ],
         { ignoreReturnCode: true});
 }
