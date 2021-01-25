@@ -64,6 +64,7 @@ jobs:
         git commit -m "Update changelog with version ${{ steps.increment-version.outputs.next-version }}"
 
     - name: Push changes
+      if: ${{ steps.context.outputs.should-publish == 'true' }}
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
