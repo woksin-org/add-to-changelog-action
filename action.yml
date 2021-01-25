@@ -1,14 +1,20 @@
-name: 'The Action Name'
-description: 'The action description'
+name: 'Add to changelog'
+description: 'Prepends text to the changelog'
 inputs:
-  someInput:
-    description: Description of the input
+  version:
+    description: The version to add to the changelog
     required: true
+  body:
+    description: Content to be appended to the changelog
+    required: true
+  pr-url:
+    description: The url to the pull request
+    required: true
+  changelog-path:
+    description: The relative path to the changelog file
+    required: false
+    default: 'CHANGELOG.md'
 
-outputs:
-  output:
-    description: Description of the output
-  
 runs:
   using: 'node12'
   main: 'release/index.js'
