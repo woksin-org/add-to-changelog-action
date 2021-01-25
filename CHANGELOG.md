@@ -1,3 +1,11 @@
+# [0.1.3] - 2021-0-25 [PR: #4](https://github.com/dolittle/add-to-changelog-action/pull/4)
+## Summary
+
+Fix date on PR text
+
+### Fixed
+
+- Fix pr dates again
 # [0.1.2] - function getFullYear() { [native code] }-function getMonth() { [native code] }-function getDate() { [native code] } [PR: 3](https://github.com/dolittle/add-to-changelog-action/pull/3)
 ## Summary
 
