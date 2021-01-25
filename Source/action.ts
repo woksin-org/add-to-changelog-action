@@ -48,6 +48,6 @@ function writeToFile(filePath: string, content: string[]) {
         const newContent = oldContent.join('\n');
         writeFile(filePath, newContent, (err) => {
             if (err) fail(new Error(err.message));
-        };
+        });
     });
 }
