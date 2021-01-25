@@ -1,3 +1,13 @@
+# [2.0.1] - 2021-1-25 [PR: #11](https://github.com/dolittle/add-to-changelog-action/pull/11)
+## Summary
+
+Fixes the 'token' input in the action.yml configuration
+
+### Fixed
+
+- Changed 'token' default value to '${{ github.token }}'
+
+
 # [1.0.4] - 2021-1-25 [PR: #9](https://github.com/dolittle/add-to-changelog-action/pull/9)
 ## Summary
 
