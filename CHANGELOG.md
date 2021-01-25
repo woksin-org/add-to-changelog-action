@@ -1,3 +1,13 @@
+# [2.0.2] - 2021-1-25 [PR: #12](https://github.com/dolittle/add-to-changelog-action/pull/12)
+## Summary
+
+Fixes the commit message so that it is the same as before.
+
+### Fixed
+
+- The commit message to be the same as before
+
+
 # [2.0.1] - 2021-1-25 [PR: #11](https://github.com/dolittle/add-to-changelog-action/pull/11)
 ## Summary
 
