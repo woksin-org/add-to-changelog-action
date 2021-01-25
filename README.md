@@ -48,14 +48,6 @@ jobs:
         version: ${{ steps.context.outputs.current-version }}
         release-type: ${{ steps.context.outputs.release-type }}
 
-    - name: Create GitHub Release
-      if: ${{ steps.context.outputs.should-publish == 'true' }}
-      uses: dolittle/github-release-action@v2
-      with:
-        token: ${{  secrets.BUILD_PAT  }}
-        version: ${{ steps.increment-version.outputs.next-version }}
-        body: ${{ steps.context.outputs.pr-body }}
-
     - name: Prepend to Changelog
       if: ${{ steps.context.outputs.should-publish == 'true' }}
       uses: dolittle/add-to-changelog-action@v2
@@ -67,6 +59,14 @@ jobs:
         user-email: some-email@company.com
         user-name: some-name
         token: ${{ github.token }}
+
+    - name: Create GitHub Release
+      if: ${{ steps.context.outputs.should-publish == 'true' }}
+      uses: dolittle/github-release-action@v2
+      with:
+        token: ${{  secrets.BUILD_PAT  }}
+        version: ${{ steps.increment-version.outputs.next-version }}
+        body: ${{ steps.context.outputs.pr-body }}
 ```
 
 ## Contributing
