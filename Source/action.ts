@@ -34,7 +34,7 @@ function fail(error: Error) {
 
 function createChangelogContent(body: string, version: string, prUrl: string): string[] {
     const date = new Date(new Date().toUTCString());
-    const heading = `# [${version}] - ${date.getFullYear}-${date.getMonth}-${date.getDate} (PR: ${prUrl})`;
+    const heading = `# [${version}] - ${date.getFullYear()}-${date.getMonth()}-${date.getDate()} (PR: ${prUrl})`;
     const splitBody = body.split('\n');
     return [heading, ...splitBody];
 }
