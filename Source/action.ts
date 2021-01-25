@@ -41,7 +41,7 @@ function createChangelogContent(body: string, version: string, prUrl: string): s
 }
 
 function writeToFile(filePath: string, content: string[]) {
-    readFile(filePath, { flag: 'w' }, (err, data) => {
+    readFile(filePath, { flag: 'w+' }, (err, data) => {
         if (err) fail(err);
         const oldContent = data.toString().split('\n');
         oldContent.unshift(...content);
