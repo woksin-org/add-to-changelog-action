@@ -37,11 +37,11 @@ function createChangelogContent(body: string, version: string, prUrl: string): s
     const prNumber = prUrl.slice(prUrl.indexOf('pull/')).match(/\d+$/);
     const heading = `# [${version}] - ${date.getFullYear()}-${date.getMonth()}-${date.getDate()} [PR: #${prNumber}](${prUrl})`;
     const splitBody = body.split('\n');
-    return [heading, ...splitBody];
+    return [heading, ...splitBody, '\n'];
 }
 
 function writeToFile(filePath: string, content: string[]) {
-    readFile(filePath, { flag: 'w+' }, (err, data) => {
+    readFile(filePath, { flag: 'a+' }, (err, data) => {
         if (err) fail(err);
         const oldContent = data.toString().split('\n');
         oldContent.unshift(...content);
