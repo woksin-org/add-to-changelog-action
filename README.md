@@ -66,7 +66,7 @@ jobs:
         changelog-path: CHANGELOG.md
         user-email: some-email@company.com
         user-name: some-name
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ github.token }}
 ```
 
 ## Contributing

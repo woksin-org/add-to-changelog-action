@@ -1,3 +1,31 @@
+# [2.0.1] - 2021-1-25 [PR: #11](https://github.com/dolittle/add-to-changelog-action/pull/11)
+## Summary
+
+Fixes the 'token' input in the action.yml configuration
+
+### Fixed
+
+- Changed 'token' default value to '${{ github.token }}'
+
+# [2.0.0] - 2021-1-25 [PR: #10](https://github.com/dolittle/add-to-changelog-action/pull/10)
+## Summary
+
+This action now also commits and pushes the changelog file to the branch it's committed to.
+
+This is a breaking change because it adds new required inputs.
+
+### Added
+
+- 'user-name' input for configuring git user.name
+- 'user-email' input for configuring git user.email
+- 'token' input used as the token that pushes the changes. (Not actually in use yet)
+- This action now commits and pushes the changed changelog to the branch that correlates to 'context.ref' 
+
+### Changed
+
+- README
+- Workflow so that it uses the new inputs of this action
+
 # [1.0.4] - 2021-1-25 [PR: #9](https://github.com/dolittle/add-to-changelog-action/pull/9)
 ## Summary
 
