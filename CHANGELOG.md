@@ -1,3 +1,11 @@
+# [1.0.0] - 2021-0-25 [PR: #5](https://github.com/dolittle/add-to-changelog-action/pull/5)
+## Summary
+
+Releases v1
+
+### Added
+
+- v1
 # [0.1.3] - 2021-0-25 [PR: #4](https://github.com/dolittle/add-to-changelog-action/pull/4)
 ## Summary
 
