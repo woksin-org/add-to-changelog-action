@@ -14,6 +14,16 @@ inputs:
     description: The relative path to the changelog file
     required: false
     default: 'CHANGELOG.md'
+  user-email:
+    description: The email of the user that commits the CHANGELOG
+    required: true
+  user-name:
+    description: The name of the user that commits the CHANGELOG
+    required: true
+  token:
+    description: The token used for pushing the CHANGELOG
+    required: false
+    default: ${{ github.token }}
 
 runs:
   using: 'node12'

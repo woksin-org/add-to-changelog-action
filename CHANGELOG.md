@@ -1,3 +1,61 @@
+# [2.0.3] - 2021-1-25 [PR: #13](https://github.com/dolittle/add-to-changelog-action/pull/13)
+## Summary
+
+The changelog file should be committed before the release is created in order for the new changelog to be a part of the release.
+
+### Fixed
+
+- Release after changelog is committed
+
+
+# [2.0.2] - 2021-1-25 [PR: #12](https://github.com/dolittle/add-to-changelog-action/pull/12)
+## Summary
+
+Fixes the commit message so that it is the same as before.
+
+### Fixed
+
+- The commit message to be the same as before
+
+
+# [2.0.1] - 2021-1-25 [PR: #11](https://github.com/dolittle/add-to-changelog-action/pull/11)
+## Summary
+
+Fixes the 'token' input in the action.yml configuration
+
+### Fixed
+
+- Changed 'token' default value to '${{ github.token }}'
+
+# [2.0.0] - 2021-1-25 [PR: #10](https://github.com/dolittle/add-to-changelog-action/pull/10)
+## Summary
+
+This action now also commits and pushes the changelog file to the branch it's committed to.
+
+This is a breaking change because it adds new required inputs.
+
+### Added
+
+- 'user-name' input for configuring git user.name
+- 'user-email' input for configuring git user.email
+- 'token' input used as the token that pushes the changes. (Not actually in use yet)
+- This action now commits and pushes the changed changelog to the branch that correlates to 'context.ref' 
+
+### Changed
+
+- README
+- Workflow so that it uses the new inputs of this action
+
+# [1.0.4] - 2021-1-25 [PR: #9](https://github.com/dolittle/add-to-changelog-action/pull/9)
+## Summary
+
+Fixed month bug
+
+### Fixed
+
+- Fixed month to be more human readable so add + 1 to the 0 based month number
+
+
 # [1.0.3] - 2021-0-25 [PR: #8](https://github.com/dolittle/add-to-changelog-action/pull/8)
 ## Summary
 

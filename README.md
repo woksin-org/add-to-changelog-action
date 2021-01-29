@@ -1,13 +1,16 @@
 # GitHub Action - Add To Changelog
 ![Github JavaScript Actions CI/CD](https://github.com/dolittle/add-to-changelog-action/workflows/Github%20JavaScript%20Actions%20CI/CD/badge.svg)
 
-This GitHub action prepends the release note from the PR body to the CHANGELOG.md file
+This GitHub action prepends the release note from the PR body to the CHANGELOG.md file and commits and pushes the file to the current branch.
 
 ### Inputs
 - `version`: The version released
 - `body`: The main text to add to the changelog
 - `pr-url`: URL to the PR that resulted in the release
 - `changelog-path`: Path to the CHANGELOG.md file. Defaults to `CHANGELOG.md` in repo root.
+- `user-email`: The email of the user that should commit the CHANGELOG
+- `user-name`: The name of the user that should commit the CHANGELOG
+- `token`: The token used to push the commit. Defaults to `${{ secrets.GITHUB_TOKEN }}`
 
 ### Example Workflow
 ```yaml
@@ -45,6 +48,18 @@ jobs:
         version: ${{ steps.context.outputs.current-version }}
         release-type: ${{ steps.context.outputs.release-type }}
 
+    - name: Prepend to Changelog
+      if: ${{ steps.context.outputs.should-publish == 'true' }}
+      uses: dolittle/add-to-changelog-action@v2
+      with:
+        version: ${{ steps.increment-version.outputs.next-version }}
+        body: ${{ steps.context.outputs.pr-body }}
+        pr-url: ${{ steps.context.outputs.pr-url }}
+        changelog-path: CHANGELOG.md
+        user-email: some-email@company.com
+        user-name: some-name
+        token: ${{ github.token }}
+
     - name: Create GitHub Release
       if: ${{ steps.context.outputs.should-publish == 'true' }}
       uses: dolittle/github-release-action@v2
@@ -52,30 +67,6 @@ jobs:
         token: ${{  secrets.BUILD_PAT  }}
         version: ${{ steps.increment-version.outputs.next-version }}
         body: ${{ steps.context.outputs.pr-body }}
-
-    - name: Prepend to Changelog
-      if: ${{ steps.context.outputs.should-publish == 'true' }}
-      uses: ./
-      with:
-        version: ${{ steps.increment-version.outputs.next-version }}
-        body: ${{ steps.context.outputs.pr-body }}
-        pr-url: ${{ steps.context.outputs.pr-url }}
-        changelog-path: CHANGELOG.md
-
-    - name: Commit changelog
-      if: ${{ steps.context.outputs.should-publish == 'true' }}
-      run: |
-        git config --local user.email "build@dolittle.com"
-        git config --local user.name "dolittle-build"
-        git add CHANGELOG.md
-        git commit -m "Add version ${{ steps.increment-version.outputs.next-version }} to changelog"
-
-    - name: Push changes
-      if: ${{ steps.context.outputs.should-publish == 'true' }}
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: 'master'
 ```
 
 ## Contributing
