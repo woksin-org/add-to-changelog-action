@@ -1,3 +1,13 @@
+# [2.0.3] - 2021-1-25 [PR: #13](https://github.com/dolittle/add-to-changelog-action/pull/13)
+## Summary
+
+The changelog file should be committed before the release is created in order for the new changelog to be a part of the release.
+
+### Fixed
+
+- Release after changelog is committed
+
+
 # [2.0.2] - 2021-1-25 [PR: #12](https://github.com/dolittle/add-to-changelog-action/pull/12)
 ## Summary
 

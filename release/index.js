@@ -1790,7 +1790,7 @@ function register (state, name, method, options) {
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-const VERSION = "2.8.2";
+const VERSION = "2.9.0";
 
 /**
  * Some “list” response that can be paginated have a different response structure
@@ -7005,7 +7005,7 @@ const Endpoints = {
   }
 };
 
-const VERSION = "4.8.1";
+const VERSION = "4.9.0";
 
 function endpointsToMethods(octokit, endpointsMap) {
   const newMethods = {};
