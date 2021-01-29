@@ -1,7 +1,7 @@
 # GitHub Action - Add To Changelog
 ![Github JavaScript Actions CI/CD](https://github.com/dolittle/add-to-changelog-action/workflows/Github%20JavaScript%20Actions%20CI/CD/badge.svg)
 
-This GitHub action prepends the release note from the PR body to the CHANGELOG.md file and commits and pushes the file to the current branch.
+This GitHub action prepends the release note from the PR body to the `CHANGELOG.md` file. It then commits and pushes the file.
 
 ### Inputs
 - `version`: The version released
@@ -36,6 +36,7 @@ jobs:
     - run: yarn
     - run: yarn release
 
+    # this outputs the PR body
     - name: Establish context
       id: context
       uses: dolittle/establish-context-action@v2
@@ -53,9 +54,12 @@ jobs:
       uses: dolittle/add-to-changelog-action@v2
       with:
         version: ${{ steps.increment-version.outputs.next-version }}
+        # input for the text to prepend to
         body: ${{ steps.context.outputs.pr-body }}
         pr-url: ${{ steps.context.outputs.pr-url }}
+        # path to changelog
         changelog-path: CHANGELOG.md
+        # for committing and pushing
         user-email: some-email@company.com
         user-name: some-name
         token: ${{ github.token }}
