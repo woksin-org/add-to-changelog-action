@@ -1,3 +1,13 @@
+# [2.0.4] - 2021-1-29 [PR: #14](https://github.com/dolittle/add-to-changelog-action/pull/14)
+## Summary
+
+Added more examples
+
+### Added
+
+- Added example text to README
+
+
 # [2.0.3] - 2021-1-25 [PR: #13](https://github.com/dolittle/add-to-changelog-action/pull/13)
 ## Summary
 
