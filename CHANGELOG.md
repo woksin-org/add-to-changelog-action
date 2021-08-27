@@ -1,3 +1,13 @@
+# [2.0.5] - 2021-8-27 [PR: #15](https://github.com/dolittle/add-to-changelog-action/pull/15)
+## Summary
+
+Pull before pushing commit
+
+### Changed
+
+- Does a git pull before git push
+
+
 # [2.0.4] - 2021-1-29 [PR: #14](https://github.com/dolittle/add-to-changelog-action/pull/14)
 ## Summary
 
