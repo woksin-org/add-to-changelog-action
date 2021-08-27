@@ -64,10 +64,15 @@ function writeToFile(filePath: string, content: string[]) {
 async function pushChanges() {
     const branchName = path.basename(github.context.ref);
     logger.info(`Pushing changelog to origin ${branchName}`);
+
+    await exec(
+        `git pull origin ${branchName}`,
+        undefined,
+        { ignoreReturnCode: true });
     await exec(
         `git push origin ${branchName}`,
         undefined,
-        { ignoreReturnCode: true});
+        { ignoreReturnCode: true });
 }
 async function configureUser(userEmail: string, userName: string) {
     logger.info(`Configuring user with email '${userEmail}' and name '${userName}'`);
@@ -77,25 +82,25 @@ async function configureUser(userEmail: string, userName: string) {
             'user.email',
             `"${userEmail}"`
         ],
-        { ignoreReturnCode: true});
+        { ignoreReturnCode: true });
     await exec(
         'git config',
         [
             'user.name',
             `"${userName}"`
         ],
-        { ignoreReturnCode: true});
+        { ignoreReturnCode: true });
 }
 async function commitChangelog(changelogPath: string, version: string) {
     logger.info(`Adding and committing ${changelogPath}`);
     await exec(
         'git add',
         [changelogPath],
-        { ignoreReturnCode: true});
+        { ignoreReturnCode: true });
     await exec(
         'git commit',
         [
             `-m "Add version ${version} to changelog"`
         ],
-        { ignoreReturnCode: true});
+        { ignoreReturnCode: true });
 }
