@@ -11,6 +11,10 @@ import { readFile, writeFile } from 'fs';
 const logger = new Logger();
 
 run();
+
+/**
+ * Runs the action.
+ */
 export async function run() {
     try {
         const version = getInput('version', { required: true });
@@ -31,7 +35,7 @@ export async function run() {
         await commitChangelog(changelogPath, version);
         await pushChanges();
 
-    } catch (error) {
+    } catch (error: any) {
         fail(error);
     }
 }
