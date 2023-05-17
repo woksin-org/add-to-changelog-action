@@ -24,6 +24,7 @@ export async function run() {
         const userEmail = getInput('user-email', { required: true });
         const userName = getInput('user-name', { required: true });
         const token = getInput('token', { required: true });
+        const mergeStrategy = getInput('merge-strategy', { required: false }) || 'merge';
 
         logger.info(`Creating new content for changelog with version ${version}`);
         const content = createChangelogContent(body, version, prUrl);
@@ -32,6 +33,7 @@ export async function run() {
         writeToFile(changelogPath, content);
         logger.info('Write complete');
         await configureUser(userEmail, userName);
+        await configurePull(mergeStrategy)
         await commitChangelog(changelogPath, version);
         await pushChanges();
 
@@ -65,19 +67,6 @@ function writeToFile(filePath: string, content: string[]) {
     });
 }
 
-async function pushChanges() {
-    const branchName = path.basename(github.context.ref);
-    logger.info(`Pushing changelog to origin ${branchName}`);
-
-    await exec(
-        `git pull origin ${branchName}`,
-        undefined,
-        { ignoreReturnCode: true });
-    await exec(
-        `git push origin ${branchName}`,
-        undefined,
-        { ignoreReturnCode: true });
-}
 async function configureUser(userEmail: string, userName: string) {
     logger.info(`Configuring user with email '${userEmail}' and name '${userName}'`);
     await exec(
@@ -107,4 +96,53 @@ async function commitChangelog(changelogPath: string, version: string) {
             `-m "Add version ${version} to changelog"`
         ],
         { ignoreReturnCode: true });
+}
+
+
+async function configurePull(mergeStrategy: string) {
+    logger.info(`Configure git pull as '${mergeStrategy}'`);
+    switch (mergeStrategy) {
+        case 'rebase':
+            await exec(
+                'git config',
+                [
+                    'pull.rebase',
+                    'true'
+                ]
+            );
+            break;
+        case 'fast-forward':
+            await exec(
+                'git config',
+                [
+                    'pull.ff',
+                    'only'
+                ]
+            );
+            break;
+        case 'merge':
+            await exec(
+                'git config',
+                [
+                    'pull.rebase',
+                    'false'
+                ]
+            );
+            break;
+        default:
+            await exec(
+                'git config',
+                [
+                    'pull.rebase',
+                    'false'
+                ]
+            );
+    }
+}
+
+async function pushChanges() {
+    const branchName = path.basename(github.context.ref);
+    logger.info(`Pushing changelog to origin ${branchName}`);
+    await exec('git pull origin', [branchName]);
+    await exec('git push origin', [branchName]);
 }

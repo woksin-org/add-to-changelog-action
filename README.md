@@ -11,6 +11,11 @@ This GitHub action prepends the release note from the PR body to the `CHANGELOG.
 - `user-email`: The email of the user that should commit the CHANGELOG
 - `user-name`: The name of the user that should commit the CHANGELOG
 - `token`: The token used to push the commit. Defaults to `${{ secrets.GITHUB_TOKEN }}`
+- `merge-strategy`: How to reconcile divergent branches when pulling.
+  - `merge`: Tries to merge (default)
+  - `rebase`: Tries to rebase
+  - `fast-forward`: Only allows for fast forwards
+
 
 ### Example Workflow
 ```yaml
