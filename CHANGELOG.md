@@ -1,3 +1,9 @@
+# [2.0.6] - 2022-12-7 [PR: #16](https://github.com/dolittle/add-to-changelog-action/pull/16)
+## Summary
+
+Update deps and modernise
+
+
 # [2.0.5] - 2021-8-27 [PR: #15](https://github.com/dolittle/add-to-changelog-action/pull/15)
 ## Summary
 
