@@ -9,21 +9,20 @@ inputs:
     required: true
   pr-url:
     description: The url to the pull request
-    required: true
+    required: false
+    default: ''
   changelog-path:
     description: The relative path to the changelog file
     required: false
     default: 'CHANGELOG.md'
   user-email:
     description: The email of the user that commits the CHANGELOG
-    required: true
+    required: false
+    default: github-actions[bot]@users.noreply.github.com
   user-name:
     description: The name of the user that commits the CHANGELOG
-    required: true
-  token:
-    description: The token used for pushing the CHANGELOG
     required: false
-    default: ${{ github.token }}
+    default: github-actions[bot]
 
 runs:
   using: 'node16'
