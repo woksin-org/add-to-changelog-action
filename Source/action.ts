@@ -1,11 +1,11 @@
-// Copyright (c) Dolittle. All rights reserved.
+// Copyright (c) woksin-org. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
 import path from 'path';
 import { getInput, setFailed } from '@actions/core';
 import { exec } from '@actions/exec';
 import * as github from '@actions/github';
-import { Logger } from '@dolittle/github-actions.shared.logging';
+import { Logger } from '@woksin/github-actions.shared.logging';
 import { readFile, writeFile } from 'fs';
 
 const logger = new Logger();
@@ -19,15 +19,12 @@ export async function run() {
     try {
         const version = getInput('version', { required: true });
         const body = getInput('body', { required: true });
-        const prUrl = getInput('pr-url', { required: true });
-        const changelogPath = getInput('changelog-path', { required: true });
-        const userEmail = getInput('user-email', { required: true });
-        const userName = getInput('user-name', { required: true });
-        const token = getInput('token', { required: true });
-
+        const prUrl = getInput('pr-url', { required: false });
+        const changelogPath = getInput('changelog-path', { required: false });
+        const userEmail = getInput('user-email', { required: false });
+        const userName = getInput('user-name', { required: false });
         logger.info(`Creating new content for changelog with version ${version}`);
         const content = createChangelogContent(body, version, prUrl);
-
         logger.info(`Writing to path ${changelogPath} with heading ${content[0]} and ${content.length} lines of new content`);
         writeToFile(changelogPath, content);
         logger.info('Write complete');
@@ -45,10 +42,14 @@ function fail(error: Error) {
     setFailed(error.message);
 }
 
-function createChangelogContent(body: string, version: string, prUrl: string): string[] {
+function createChangelogContent(body: string, version: string, prUrl?: string): string[] {
     const date = new Date(new Date().toUTCString());
-    const prNumber = prUrl.slice(prUrl.indexOf('pull/')).match(/\d+$/);
-    const heading = `# [${version}] - ${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()} [PR: #${prNumber}](${prUrl})`;
+    let heading = `# [${version}] - ${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
+    if (prUrl) {
+        const prNumber = prUrl.slice(prUrl.indexOf('pull/')).match(/\d+$/);
+        heading += `[PR: #${prNumber}](${prUrl})`;
+    }
+
     const splitBody = body.split('\n');
     return [heading, ...splitBody, '\n'];
 }
@@ -78,6 +79,7 @@ async function pushChanges() {
         undefined,
         { ignoreReturnCode: true });
 }
+
 async function configureUser(userEmail: string, userName: string) {
     logger.info(`Configuring user with email '${userEmail}' and name '${userName}'`);
     await exec(
@@ -95,6 +97,7 @@ async function configureUser(userEmail: string, userName: string) {
         ],
         { ignoreReturnCode: true });
 }
+
 async function commitChangelog(changelogPath: string, version: string) {
     logger.info(`Adding and committing ${changelogPath}`);
     await exec(

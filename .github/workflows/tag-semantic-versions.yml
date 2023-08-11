@@ -1,4 +1,4 @@
-name: Github Actions Release
+name: Release GithubAction as semantic tags
 
 on:
   release:
