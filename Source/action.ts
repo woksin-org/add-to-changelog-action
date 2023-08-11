@@ -71,6 +71,14 @@ async function pushChanges() {
     logger.info(`Pushing changelog to origin ${branchName}`);
 
     await exec(
+        'git config',
+        [
+            'pull.rebase',
+            'false'
+        ]
+    );
+
+    await exec(
         `git pull origin ${branchName}`,
         undefined,
         { ignoreReturnCode: true });
