@@ -111,6 +111,10 @@ function pushChanges() {
     return __awaiter(this, void 0, void 0, function* () {
         const branchName = path_1.default.basename(github.context.ref);
         logger.info(`Pushing changelog to origin ${branchName}`);
+        yield (0, exec_1.exec)('git config', [
+            'pull.rebase',
+            'false'
+        ]);
         yield (0, exec_1.exec)(`git pull origin ${branchName}`, undefined, { ignoreReturnCode: true });
         yield (0, exec_1.exec)(`git push origin ${branchName}`, undefined, { ignoreReturnCode: true });
     });

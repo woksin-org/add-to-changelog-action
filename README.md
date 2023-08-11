@@ -31,18 +31,18 @@ jobs:
 
     - name: Prepend to Changelog
       if: ${{ steps.context.outputs.should-publish == 'true' }}
-      uses: woksin-org/add-to-changelog-action@v2
+      uses: woksin-org/add-to-changelog-action@v4
       with:
-        version: ${{ steps.increment-version.outputs.next-version }}
+        version: ${{ steps.context.outputs.new-version }}
         # input for the text to prepend to
         body: ${{ steps.context.outputs.pr-body }}
         pr-url: ${{ steps.context.outputs.pr-url }}
 
     - name: Create GitHub Release
       if: ${{ steps.context.outputs.should-publish == 'true' }}
-      uses: woksin-org/github-release-action@v2
+      uses: woksin-org/github-release-action@v3
       with:
-        version: ${{ steps.increment-version.outputs.next-version }}
+        version: ${{ steps.context.outputs.new-version }}
         body: ${{ steps.context.outputs.pr-body }}
         token: ${{ secrets.BUILD_PAT }}
 ```

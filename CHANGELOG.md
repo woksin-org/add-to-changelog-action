@@ -1,3 +1,18 @@
+# [4.0.0] - 2023-8-11[PR: #1](https://github.com/woksin-org/add-to-changelog-action/pull/1)
+## Summary
+
+Simplifies action
+
+### Changed
+
+- `pr-url` is no longer required. It defaults to empty string
+- `user-name` and `user-email` is no longer required
+
+### Removed
+
+- `token` input. It was not necessary
+
+
 # [2.0.6] - 2022-12-7 [PR: #16](https://github.com/dolittle/add-to-changelog-action/pull/16)
 ## Summary
 
