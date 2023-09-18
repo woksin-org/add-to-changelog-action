@@ -3,9 +3,9 @@
 
 import path from 'path';
 import { getInput, setFailed } from '@actions/core';
-import { exec } from '@actions/exec';
 import * as github from '@actions/github';
 import { Logger } from '@woksin/github-actions.shared.logging';
+import { safeCommitAndPush } from '@woksin/github-actions.shared.git';
 import { readFile, writeFile } from 'fs';
 
 const logger = new Logger();
@@ -28,9 +28,12 @@ export async function run() {
         logger.info(`Writing to path ${changelogPath} with heading ${content[0]} and ${content.length} lines of new content`);
         writeToFile(changelogPath, content);
         logger.info('Write complete');
-        await configureUser(userEmail, userName);
-        await commitChangelog(changelogPath, version);
-        await pushChanges();
+        await safeCommitAndPush(logger, {
+            userName,
+            userEmail,
+            branch: path.basename(github.context.ref),
+            commitMessage: `Add version ${version} to changelog`,
+            files: [changelogPath]});
 
     } catch (error: any) {
         fail(error);
@@ -64,58 +67,4 @@ function writeToFile(filePath: string, content: string[]) {
             if (err) fail(new Error(err.message));
         });
     });
-}
-
-async function pushChanges() {
-    const branchName = path.basename(github.context.ref);
-    logger.info(`Pushing changelog to origin ${branchName}`);
-
-    await exec(
-        'git config',
-        [
-            'pull.rebase',
-            'false'
-        ]
-    );
-
-    await exec(
-        `git pull origin ${branchName}`,
-        undefined,
-        { ignoreReturnCode: true });
-    await exec(
-        `git push origin ${branchName}`,
-        undefined,
-        { ignoreReturnCode: true });
-}
-
-async function configureUser(userEmail: string, userName: string) {
-    logger.info(`Configuring user with email '${userEmail}' and name '${userName}'`);
-    await exec(
-        'git config',
-        [
-            'user.email',
-            `"${userEmail}"`
-        ],
-        { ignoreReturnCode: true });
-    await exec(
-        'git config',
-        [
-            'user.name',
-            `"${userName}"`
-        ],
-        { ignoreReturnCode: true });
-}
-
-async function commitChangelog(changelogPath: string, version: string) {
-    logger.info(`Adding and committing ${changelogPath}`);
-    await exec(
-        'git add',
-        [changelogPath],
-        { ignoreReturnCode: true });
-    await exec(
-        'git commit',
-        [
-            `-m "Add version ${version} to changelog"`
-        ],
-        { ignoreReturnCode: true });
 }
