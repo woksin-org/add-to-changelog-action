@@ -1,3 +1,9 @@
+# [4.0.2] - 2023-9-18[PR: #3](https://github.com/woksin-org/add-to-changelog-action/pull/3)
+### Changed
+
+- Pushes the commit more safely
+
+
 # [4.0.1] - 2023-8-11[PR: #2](https://github.com/woksin-org/add-to-changelog-action/pull/2)
 ## Summary
 
