@@ -1,3 +1,9 @@
+# [4.0.2] - 2023-9-18[PR: #4](https://github.com/woksin-org/add-to-changelog-action/pull/4)
+### Fixed
+
+- Upgraded buggy dependency
+
+
 # [4.0.2] - 2023-9-18[PR: #3](https://github.com/woksin-org/add-to-changelog-action/pull/3)
 ### Changed
 
