@@ -47,9 +47,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const path_1 = __importDefault(__nccwpck_require__(1017));
 const core_1 = __nccwpck_require__(2186);
-const exec_1 = __nccwpck_require__(1514);
 const github = __importStar(__nccwpck_require__(5438));
 const github_actions_shared_logging_1 = __nccwpck_require__(5720);
+const github_actions_shared_git_1 = __nccwpck_require__(1282);
 const fs_1 = __nccwpck_require__(7147);
 const logger = new github_actions_shared_logging_1.Logger();
 run();
@@ -70,9 +70,13 @@ function run() {
             logger.info(`Writing to path ${changelogPath} with heading ${content[0]} and ${content.length} lines of new content`);
             writeToFile(changelogPath, content);
             logger.info('Write complete');
-            yield configureUser(userEmail, userName);
-            yield commitChangelog(changelogPath, version);
-            yield pushChanges();
+            yield (0, github_actions_shared_git_1.safeCommitAndPush)(logger, {
+                userName,
+                userEmail,
+                branch: path_1.default.basename(github.context.ref),
+                commitMessage: `Add version ${version} to changelog`,
+                files: [changelogPath]
+            });
         }
         catch (error) {
             fail(error);
@@ -105,40 +109,6 @@ function writeToFile(filePath, content) {
             if (err)
                 fail(new Error(err.message));
         });
-    });
-}
-function pushChanges() {
-    return __awaiter(this, void 0, void 0, function* () {
-        const branchName = path_1.default.basename(github.context.ref);
-        logger.info(`Pushing changelog to origin ${branchName}`);
-        yield (0, exec_1.exec)('git config', [
-            'pull.rebase',
-            'false'
-        ]);
-        yield (0, exec_1.exec)(`git pull origin ${branchName}`, undefined, { ignoreReturnCode: true });
-        yield (0, exec_1.exec)(`git push origin ${branchName}`, undefined, { ignoreReturnCode: true });
-    });
-}
-function configureUser(userEmail, userName) {
-    return __awaiter(this, void 0, void 0, function* () {
-        logger.info(`Configuring user with email '${userEmail}' and name '${userName}'`);
-        yield (0, exec_1.exec)('git config', [
-            'user.email',
-            `"${userEmail}"`
-        ], { ignoreReturnCode: true });
-        yield (0, exec_1.exec)('git config', [
-            'user.name',
-            `"${userName}"`
-        ], { ignoreReturnCode: true });
-    });
-}
-function commitChangelog(changelogPath, version) {
-    return __awaiter(this, void 0, void 0, function* () {
-        logger.info(`Adding and committing ${changelogPath}`);
-        yield (0, exec_1.exec)('git add', [changelogPath], { ignoreReturnCode: true });
-        yield (0, exec_1.exec)('git commit', [
-            `-m "Add version ${version} to changelog"`
-        ], { ignoreReturnCode: true });
     });
 }
 
@@ -702,7 +672,7 @@ class OidcClient {
                 .catch(error => {
                 throw new Error(`Failed to get ID Token. \n 
         Error Code : ${error.statusCode}\n 
-        Error Message: ${error.result.message}`);
+        Error Message: ${error.message}`);
             });
             const id_token = (_a = res.result) === null || _a === void 0 ? void 0 : _a.value;
             if (!id_token) {
@@ -5753,6 +5723,78 @@ exports.request = request;
 
 /***/ }),
 
+/***/ 1282:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.safeCommitAndPush = void 0;
+var safeCommit_1 = __nccwpck_require__(4289);
+Object.defineProperty(exports, "safeCommitAndPush", ({ enumerable: true, get: function () { return safeCommit_1.safeCommitAndPush; } }));
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ 4289:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.safeCommitAndPush = void 0;
+const exec_1 = __nccwpck_require__(1514);
+const timers_1 = __nccwpck_require__(9512);
+async function safeCommitAndPush(logger, { userName, userEmail, branch, commitMessage, files, remote = 'origin', pushRetries = 3 }) {
+    await configure(userEmail, userName);
+    await commit(commitMessage, files);
+    await safePush(remote, branch, pushRetries, logger);
+}
+exports.safeCommitAndPush = safeCommitAndPush;
+async function configure(userEmail, userName) {
+    await gitConfig('user.email', `"${userEmail}"`);
+    await gitConfig('user.name', `"${userName}"`);
+    await gitConfig('pull.rebase', 'false');
+}
+function runGitCommand(command, args, ignoreReturnCode = true) {
+    return (0, exec_1.exec)(`git ${command}`, args, { ignoreReturnCode });
+}
+function gitConfig(key, value) {
+    return runGitCommand('config', [key, value]);
+}
+async function commit(message, files) {
+    await runGitCommand('add', files);
+    await runGitCommand('commit', [`-m "${message}"`]);
+}
+async function safePush(remote, branch, pushRetries, logger) {
+    do {
+        try {
+            await runGitCommand(`pull ${remote} ${branch}`, undefined, false);
+            await runGitCommand(`push ${remote} ${branch}`, undefined, false);
+            return;
+        }
+        catch (err) {
+            pushRetries -= 1;
+            if (pushRetries <= 0) {
+                logger.error(`Failed to push commit. error: ${err}`);
+                throw err;
+            }
+            else {
+                let timeToWaitMs = Math.random() * 10000 | 0;
+                while (timeToWaitMs < 1000) {
+                    timeToWaitMs *= 10;
+                }
+                logger.warning(`Pushing commit failed. ${pushRetries} attempts remaining. error: ${err}`);
+                logger.info(`Trying too push again after ${timeToWaitMs} milliseconds`);
+                await new Promise(resolve => (0, timers_1.setTimeout)(resolve, timeToWaitMs));
+            }
+        }
+    } while (pushRetries > 0);
+}
+//# sourceMappingURL=safeCommit.js.map
+
+/***/ }),
+
 /***/ 7259:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -7532,10 +7574,6 @@ function getNodeRequestOptions(request) {
 		agent = agent(parsedURL);
 	}
 
-	if (!headers.has('Connection') && !agent) {
-		headers.set('Connection', 'close');
-	}
-
 	// HTTP-network fetch step 4.2
 	// chunked encoding is handled by Node.js
 
@@ -7955,6 +7993,7 @@ exports.Headers = Headers;
 exports.Request = Request;
 exports.Response = Response;
 exports.FetchError = FetchError;
+exports.AbortError = AbortError;
 
 
 /***/ }),
