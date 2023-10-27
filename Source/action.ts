@@ -23,8 +23,9 @@ export async function run() {
         const changelogPath = getInput('changelog-path', { required: false });
         const userEmail = getInput('user-email', { required: false });
         const userName = getInput('user-name', { required: false });
+        const headerPrefix = getInput('header-prefix', { required: false });
         logger.info(`Creating new content for changelog with version ${version}`);
-        const content = createChangelogContent(body, version, prUrl);
+        const content = createChangelogContent(body, version, prUrl, headerPrefix);
         logger.info(`Writing to path ${changelogPath} with heading ${content[0]} and ${content.length} lines of new content`);
         writeToFile(changelogPath, content);
         logger.info('Write complete');
@@ -45,9 +46,9 @@ function fail(error: Error) {
     setFailed(error.message);
 }
 
-function createChangelogContent(body: string, version: string, prUrl?: string): string[] {
+function createChangelogContent(body: string, version: string, prUrl: string, headerPrefix: string): string[] {
     const date = new Date(new Date().toUTCString());
-    let heading = `# [${version}] - ${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
+    let heading = `${headerPrefix} [${version}] - ${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
     if (prUrl) {
         const prNumber = prUrl.slice(prUrl.indexOf('pull/')).match(/\d+$/);
         heading += `[PR: #${prNumber}](${prUrl})`;
