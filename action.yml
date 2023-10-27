@@ -23,6 +23,10 @@ inputs:
     description: The name of the user that commits the CHANGELOG
     required: false
     default: github-actions[bot]
+  header-prefix:
+    description: The prefix to be added to the Version header
+    required: false
+    default: '#'
 
 runs:
   using: 'node16'
