@@ -29,6 +29,7 @@ jobs:
         version: ${{ steps.context.outputs.new-version }}
         body: ${{ steps.context.outputs.pr-body }}
         pr-url: ${{ steps.context.outputs.pr-url }}
+        header-prefix: '##'
     - name: Create GitHub Release
       if: ${{ steps.context.outputs.should-publish == 'true' }}
       uses: woksin-org/github-release-action@v3
