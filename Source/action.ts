@@ -51,7 +51,7 @@ function createChangelogContent(body: string, version: string, prUrl: string, he
     let heading = `${headerPrefix} [${version}] - ${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
     if (prUrl) {
         const prNumber = prUrl.slice(prUrl.indexOf('pull/')).match(/\d+$/);
-        heading += `[PR: #${prNumber}](${prUrl})`;
+        heading += ` [#${prNumber}](${prUrl})`;
     }
 
     const splitBody = body.split('\n');
