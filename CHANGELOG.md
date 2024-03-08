@@ -1,3 +1,14 @@
+## [4.1.1] - 2024-3-8 [#6](https://github.com/woksin-org/add-to-changelog-action/pull/6)
+## Summary
+
+Fixes the heading format
+
+### Fixed
+
+- Adds a missing space in the heading
+- Remove the 'PR:' text, just kepp the #\<PR number\>
+
+
 ## [4.1.0] - 2023-10-27[PR: #5](https://github.com/woksin-org/add-to-changelog-action/pull/5)
 ### Added
 
