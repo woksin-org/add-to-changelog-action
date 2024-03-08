@@ -1,3 +1,9 @@
+## [4.1.0] - 2023-10-27[PR: #5](https://github.com/woksin-org/add-to-changelog-action/pull/5)
+### Added
+
+- `header-prefix` input that is the prefix of the version header appended to the changelog. By default this is `#`
+
+
 # [4.0.2] - 2023-9-18[PR: #4](https://github.com/woksin-org/add-to-changelog-action/pull/4)
 ### Fixed
 
